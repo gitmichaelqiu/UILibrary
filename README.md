@@ -54,3 +54,14 @@ and animation hooks.
 
 See [`Web/EditorialPortfolio/README.md`](Web/EditorialPortfolio/README.md) for usage
 guidance and the intended boundary between the template and a consuming website.
+
+### Zensical Documentation Site
+
+[`Web/Zensical/`](Web/Zensical/) is a reusable Zensical configuration and theme
+foundation extracted from the shared settings in the mqiu.dev blog and
+DesktopRenamer documentation sites. It includes a placeholder project config,
+light/dark palette setup, Markdown extensions, theme overrides, branded footer
+override, and optional sheet-table and pan/zoom styles.
+
+See [`Web/Zensical/README.md`](Web/Zensical/README.md) for setup instructions and
+the boundary between reusable settings and site-specific content.

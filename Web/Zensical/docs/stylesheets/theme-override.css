@@ -1,0 +1,68 @@
+/* Sync Zensical's palette with the editorial portfolio theme. */
+:root {
+  --pale-silver: #FAFAF6;
+  --bg-primary: var(--pale-silver);
+}
+
+html {
+  scroll-behavior: auto !important;
+  scroll-padding-top: 0 !important;
+}
+
+[data-md-color-scheme="default"] {
+  --md-primary-fg-color: #002FA7;
+  --md-primary-fg-color--light: #1A49BB;
+  --md-primary-fg-color--dark: #00258C;
+  --md-accent-fg-color: #002FA7;
+  --md-accent-fg-color--transparent: rgba(0, 47, 167, 0.15);
+  --md-default-bg-color: #FAFAF6;
+  --md-typeset-a-color: #002FA7;
+  --md-typeset-mark-color: rgba(0, 47, 167, 0.15);
+  --md-code-hl-color: #002FA7;
+  --md-code-hl-color--light: rgba(0, 47, 167, 0.1);
+}
+
+[data-md-color-scheme="slate"] {
+  --bg-primary: #0a0a0a;
+  --md-primary-fg-color: #5B8DEF;
+  --md-primary-fg-color--light: #7DA4F2;
+  --md-primary-fg-color--dark: #4A75CC;
+  --md-accent-fg-color: #5B8DEF;
+  --md-accent-fg-color--transparent: rgba(91, 141, 239, 0.15);
+  --md-default-bg-color: #0a0a0a;
+  --md-typeset-a-color: #5B8DEF;
+  --md-code-hl-color: #5B8DEF;
+  --md-code-hl-color--light: rgba(91, 141, 239, 0.15);
+}
+
+::selection {
+  background: #002FA7 !important;
+  color: #ffffff !important;
+}
+
+[data-md-color-scheme="slate"] ::selection {
+  background: #5B8DEF !important;
+  color: #ffffff !important;
+}
+
+.md-header__title,
+.md-header__title .md-header__ellipsis,
+.md-header__title .md-header__topic {
+  color: var(--md-default-fg-color) !important;
+}
+
+.md-tabs__item--active {
+  border-bottom-color: var(--klein-blue-text);
+}
+
+.md-typeset blockquote {
+  border-left-color: var(--klein-blue-text);
+}
+
+[data-md-color-switching] {
+  overflow-anchor: none;
+}
+
+.md-header {
+  overflow-anchor: none;
+}

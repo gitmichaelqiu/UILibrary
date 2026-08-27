@@ -1,0 +1,79 @@
+[project]
+site_name = "Your Documentation Site"
+site_author = "Your Name"
+site_description = "Documentation for your project."
+site_url = "https://example.com"
+
+repo_url = "https://github.com/your-account/your-repository"
+repo_name = "your-account/your-repository"
+repo = "fontawesome/brands/git-alt"
+
+copyright = "Copyright &copy; 2026 Your Name"
+
+nav = [
+    { Home = "index.md" },
+]
+
+extra_css = [
+    "https://unpkg.com/katex@0/dist/katex.min.css",
+    "stylesheets/brand-theme.css",
+    "stylesheets/sheet.css",
+    "stylesheets/pan_zoom.css",
+    "stylesheets/theme-override.css",
+]
+
+[project.theme]
+logo = "images/logo.svg"
+favicon = "images/favicon.png"
+features = [
+    "navigation.tabs",
+    "navigation.sections",
+    "navigation.path",
+    "navigation.footer",
+    "content.code.copy",
+    "navigation.top",
+]
+custom_dir = "overrides"
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme)"
+toggle.icon = "lucide/sun-moon"
+toggle.name = "Switch to light mode"
+primary = "indigo"
+accent = "indigo"
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: light)"
+scheme = "default"
+toggle.icon = "lucide/sun"
+toggle.name = "Switch to dark mode"
+primary = "indigo"
+accent = "indigo"
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: dark)"
+scheme = "slate"
+toggle.icon = "lucide/moon"
+toggle.name = "Switch to system preference"
+primary = "indigo"
+accent = "indigo"
+
+[project.markdown_extensions]
+abbr = {}
+admonition = {}
+attr_list = {}
+def_list = {}
+footnotes = {}
+md_in_html = {}
+toc = { permalink = true }
+"pymdownx.details" = {}
+"pymdownx.emoji" = { emoji_generator = "zensical.extensions.emoji.to_svg", emoji_index = "zensical.extensions.emoji.twemoji" }
+"pymdownx.highlight" = {}
+"pymdownx.keys" = {}
+"pymdownx.smartsymbols" = {}
+"pymdownx.superfences" = { custom_fences = [
+    { name = "mermaid", class = "mermaid", format = "pymdownx.superfences.fence_code_format" },
+] }
+"pymdownx.tabbed" = { alternate_style = true }
+"pymdownx.tasklist" = { custom_checkbox = true }
+"pymdownx.tilde" = {}
