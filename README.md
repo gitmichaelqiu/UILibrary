@@ -41,3 +41,16 @@ Follow the repository's existing Swift style: four-space indentation, same-line
 braces, `camelCase` symbols, narrow access control, and Conventional Commit messages.
 Keep user-visible text localizable and preserve the macOS 13 deployment target unless
 the consuming app has a deliberate reason to raise it.
+
+## Web
+
+### Editorial Portfolio Website
+
+[`Web/EditorialPortfolio/main.css`](Web/EditorialPortfolio/main.css) is a reusable,
+CSS-only foundation extracted from the shared styling system used by the mqiu.dev
+portfolio and product websites. It includes responsive editorial layouts, light and
+dark theme tokens, typography, glass surfaces, navigation, cards, hover treatments,
+and animation hooks.
+
+See [`Web/EditorialPortfolio/README.md`](Web/EditorialPortfolio/README.md) for usage
+guidance and the intended boundary between the template and a consuming website.
