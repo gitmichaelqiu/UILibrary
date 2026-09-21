@@ -15,6 +15,18 @@ public struct ModularSettingsTab: Hashable, Identifiable {
         self.title = title
         self.systemImage = systemImage
     }
+
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.id == rhs.id
+            && lhs.title.key == rhs.title.key
+            && lhs.systemImage == rhs.systemImage
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+        hasher.combine(title.key)
+        hasher.combine(systemImage)
+    }
 }
 
 public struct ModularSettingsSearchItem: Identifiable, Hashable {
@@ -133,6 +145,7 @@ public struct ModularSettingsRow<Content: View>: View {
     private let title: LocalizedStringResource
     private let helperText: LocalizedStringKey?
     private let warningText: LocalizedStringKey?
+    private let requirements: [ModularSettingsRequirement]
     private let content: Content
     @AppStorage("ShowSettingsDemoVideos") private var showDemoVideos = true
     @Environment(\.modularSettingsTab) private var tab
@@ -143,11 +156,13 @@ public struct ModularSettingsRow<Content: View>: View {
         _ title: LocalizedStringResource,
         helperText: LocalizedStringKey? = nil,
         warningText: LocalizedStringKey? = nil,
+        requirements: [ModularSettingsRequirement] = [],
         @ViewBuilder content: () -> Content
     ) {
         self.title = title
         self.helperText = helperText
         self.warningText = warningText
+        self.requirements = requirements
         self.content = content()
     }
 
@@ -160,6 +175,7 @@ public struct ModularSettingsRow<Content: View>: View {
                 ))
                 if let helperText { ModularSettingsInfoButton(text: helperText) }
                 if let warningText { ModularSettingsWarningButton(text: warningText) }
+                ModularSettingsRequirementWarning(requirements: requirements)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             content
@@ -172,6 +188,64 @@ public struct ModularSettingsRow<Content: View>: View {
             if !isPreRendering {
                 navigationState.unregister(title: title.key, tabID: tab.id)
             }
+        }
+    }
+}
+
+/// Describes one capability required by a settings row.
+public struct ModularSettingsRequirement: Identifiable, Hashable {
+    public let id: String
+    public let name: String
+    public let isSatisfied: Bool
+
+    public init(id: String? = nil, name: String, isSatisfied: Bool) {
+        self.id = id ?? name
+        self.name = name
+        self.isSatisfied = isSatisfied
+    }
+
+    public static func accessibility(isGranted: Bool) -> Self {
+        Self(name: "Accessibility permission", isSatisfied: isGranted)
+    }
+
+    /// Event posting is presented under the same Accessibility permission in
+    /// the macOS privacy UI, so it intentionally shares that warning label.
+    public static func inputEvents(isGranted: Bool) -> Self {
+        Self(name: "Accessibility permission", isSatisfied: isGranted)
+    }
+
+    public static func screenRecording(isGranted: Bool) -> Self {
+        Self(name: "Screen Recording permission", isSatisfied: isGranted)
+    }
+}
+
+/// Shows one warning popover containing the distinct requirements that are
+/// currently unavailable for a row.
+public struct ModularSettingsRequirementWarning: View {
+    private let requirements: [ModularSettingsRequirement]
+
+    public init(requirements: [ModularSettingsRequirement]) {
+        self.requirements = requirements
+    }
+
+    private var missingRequirements: [ModularSettingsRequirement] {
+        var seenNames = Set<String>()
+        return requirements.filter { requirement in
+            !requirement.isSatisfied && seenNames.insert(requirement.name).inserted
+        }
+    }
+
+    private var warningText: LocalizedStringKey {
+        let names = missingRequirements
+            .map { NSLocalizedString($0.name, comment: "") }
+            .joined(separator: ", ")
+        let format = NSLocalizedString("Requires %@.", comment: "")
+        return LocalizedStringKey(String(format: format, names))
+    }
+
+    public var body: some View {
+        if !missingRequirements.isEmpty {
+            ModularSettingsWarningButton(text: warningText)
         }
     }
 }

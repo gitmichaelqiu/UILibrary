@@ -15,7 +15,15 @@ provides:
 - `ModularSettingsContainer` for padded, scrollable tab content.
 - `ModularSettingsSection` and `ModularSettingsRow` for consistent grouped settings UI.
 - `ModularSettingsInfoButton` and `ModularSettingsWarningButton` for contextual popovers.
+- `ModularSettingsRequirement` and `ModularSettingsRequirementWarning` for showing
+  missing capabilities directly on affected rows.
 - `modularSettingsHighlightedText` for highlighting search matches.
+
+[`SwiftUI/ModularSettings/ModularSettingsPermissions.swift`](SwiftUI/ModularSettings/ModularSettingsPermissions.swift)
+provides `ModularSettingsPermissionManager`, a reusable macOS TCC manager for
+Accessibility, event synthesis, and Screen Recording permissions. It refreshes
+while System Settings is open and can relaunch the current app after a permission
+change. App-specific permissions and diagnostics should remain in the consuming app.
 
 The file is intentionally self-contained and has no dependency on the source app's
 models or services. Add it to a SwiftUI target, create one shared navigation state,
@@ -23,6 +31,7 @@ and inject it with `.environmentObject(...)`:
 
 ```swift
 @StateObject private var navigationState = ModularSettingsNavigationState()
+@StateObject private var permissionManager = ModularSettingsPermissionManager.shared
 
 var body: some View {
     ModularSettingsContainer(accountTab) {
@@ -30,6 +39,17 @@ var body: some View {
             ModularSettingsRow("Display name", helperText: "Shown to other users.") {
                 TextField("Name", text: $name)
                     .frame(width: 180)
+            }
+
+            ModularSettingsRow(
+                "Window automation",
+                requirements: [
+                    .accessibility(isGranted: permissionManager.hasAccessibilityPermission)
+                ]
+            ) {
+                Button("Settings") {
+                    permissionManager.requestAccessibilityPermission()
+                }
             }
         }
     }
