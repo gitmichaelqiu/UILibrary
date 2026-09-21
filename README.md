@@ -17,6 +17,11 @@ provides:
 - `ModularSettingsInfoButton` and `ModularSettingsWarningButton` for contextual popovers.
 - `ModularSettingsRequirement` and `ModularSettingsRequirementWarning` for showing
   missing capabilities directly on affected rows.
+- `ModularSettingsSliderRow` for resettable, animated numeric settings.
+- `ModularSettingsShortcutRow` for reusable shortcut display, recording, and reset controls.
+- `ModularSettingsReorderableList` for native macOS 27 reordering with a drag-and-drop fallback.
+- `ModularSettingsPermissionStatusIcon` for consistent permission state indicators.
+- `ModularSettingsAnimatedValue` and `withModularSettingsAnimation` for compact value transitions.
 - `modularSettingsHighlightedText` for highlighting search matches.
 
 [`SwiftUI/ModularSettings/ModularSettingsPermissions.swift`](SwiftUI/ModularSettings/ModularSettingsPermissions.swift)
@@ -25,9 +30,9 @@ Accessibility, event synthesis, and Screen Recording permissions. It refreshes
 while System Settings is open and can relaunch the current app after a permission
 change. App-specific permissions and diagnostics should remain in the consuming app.
 
-The file is intentionally self-contained and has no dependency on the source app's
-models or services. Add it to a SwiftUI target, create one shared navigation state,
-and inject it with `.environmentObject(...)`:
+The components are intentionally self-contained and have no dependency on a source
+app's models or services. Add the SwiftUI files to a macOS target, create one shared
+navigation state, and inject it with `.environmentObject(...)`:
 
 ```swift
 @StateObject private var navigationState = ModularSettingsNavigationState()

@@ -29,6 +29,16 @@ public struct ModularSettingsTab: Hashable, Identifiable {
     }
 }
 
+public enum ModularSettingsMetrics {
+    public static let containerPadding: CGFloat = 16
+    public static let sectionSpacing: CGFloat = 20
+    public static let rowContentSpacing: CGFloat = 8
+    public static let labelSpacing: CGFloat = 4
+    public static let rowVerticalPadding: CGFloat = 6
+    public static let rowHorizontalPadding: CGFloat = 10
+    public static let listRowHeight: CGFloat = 44
+}
+
 public struct ModularSettingsSearchItem: Identifiable, Hashable {
     public let id: String
     public let title: String
@@ -127,7 +137,7 @@ public struct ModularSettingsContainer<Content: View>: View {
         ScrollViewReader { proxy in
             ScrollView {
                 content()
-                    .padding(16)
+                    .padding(ModularSettingsMetrics.containerPadding)
             }
             .environment(\.modularSettingsTab, tab)
             .onChange(of: navigationState.scrollToItemID) { itemID in
@@ -168,7 +178,7 @@ public struct ModularSettingsRow<Content: View>: View {
 
     public var body: some View {
         HStack {
-            HStack(spacing: 4) {
+            HStack(spacing: ModularSettingsMetrics.labelSpacing) {
                 Text(modularSettingsHighlightedText(
                     text: String(localized: title),
                     query: navigationState.searchText
@@ -180,8 +190,9 @@ public struct ModularSettingsRow<Content: View>: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             content
         }
-        .padding(.vertical, 6)
-        .padding(.horizontal, 10)
+        .padding(.vertical, ModularSettingsMetrics.rowVerticalPadding)
+        .padding(.horizontal, ModularSettingsMetrics.rowHorizontalPadding)
+        .frame(minHeight: ModularSettingsMetrics.listRowHeight)
         .id(title.key)
         .onAppear { navigationState.register(title: title.key, tabID: tab.id) }
         .onDisappear {
