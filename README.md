@@ -23,6 +23,8 @@ provides:
 - `ModularSettingsPermissionStatusIcon` for consistent permission state indicators.
 - `ModularSettingsAnimatedValue` and `withModularSettingsAnimation` for compact value transitions.
 - `modularSettingsHighlightedText` for highlighting search matches.
+- `ModularSettingsTabBar` for native, horizontally scrollable tab groups with
+  centered tabs, progressive edge fades, and optional add/delete controls.
 
 [`SwiftUI/ModularSettings/ModularSettingsPermissions.swift`](SwiftUI/ModularSettings/ModularSettingsPermissions.swift)
 provides `ModularSettingsPermissionManager`, a reusable macOS TCC manager for
@@ -61,6 +63,32 @@ var body: some View {
     .environmentObject(navigationState)
 }
 ```
+
+#### Tab bar template
+
+`ModularSettingsTabBar` keeps a native `.tabs` picker on macOS 27 and a native
+segmented picker on earlier macOS versions. It centers the picker while the
+items fit, then enables horizontal scrolling and fades the clipped edges when
+the tab group is wider than its available space. The add and delete controls
+are optional and remain outside the scrolling region.
+
+```swift
+ModularSettingsTabBar(
+    "Dock Set",
+    items: dockSets,
+    selection: $selectedDockSetID,
+    onAdd: addDockSet,
+    onDelete: deleteDockSet,
+    canDelete: { _ in dockSets.count > 1 },
+    accessibilityLabel: { $0.name }
+) { dockSet in
+    Text(dockSet.name)
+}
+```
+
+The component is intentionally generic: the consuming app owns item identity,
+selection state, labels, and destructive-action confirmation. Keep those
+policies outside the reusable tab-bar template.
 
 Follow the repository's existing Swift style: four-space indentation, same-line
 braces, `camelCase` symbols, narrow access control, and Conventional Commit messages.
