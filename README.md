@@ -90,6 +90,12 @@ The component is intentionally generic: the consuming app owns item identity,
 selection state, labels, and destructive-action confirmation. Keep those
 policies outside the reusable tab-bar template.
 
+After a confirmed deletion, use `ModularSettingsTabBarSelection` to preserve
+the current selection when deleting another tab, select the preceding tab when
+deleting the selected tab, and fall back to the new first tab when deleting the
+first one. It returns `nil` when no tabs remain. Compute the replacement from
+the pre-deletion order, then remove the item and apply the returned selection.
+
 Follow the repository's existing Swift style: four-space indentation, same-line
 braces, `camelCase` symbols, narrow access control, and Conventional Commit messages.
 Keep user-visible text localizable and preserve the macOS 13 deployment target unless

@@ -197,6 +197,29 @@ public struct ModularSettingsTabBar<Item: Identifiable, TabLabel: View>: View wh
     }
 }
 
+/// Keeps tab selection stable when the selected item is removed.
+public enum ModularSettingsTabBarSelection {
+    /// Selects the preceding item after deleting the selected tab, or the new
+    /// first item when deleting the first tab. Deleting another tab preserves
+    /// the current selection.
+    public static func selectionAfterRemoving<ID: Hashable>(
+        _ removedID: ID,
+        from orderedIDs: [ID],
+        selectedID: ID?
+    ) -> ID? {
+        guard selectedID == removedID else { return selectedID }
+        guard let removedIndex = orderedIDs.firstIndex(of: removedID) else {
+            return orderedIDs.first
+        }
+
+        var remainingIDs = orderedIDs
+        remainingIDs.remove(at: removedIndex)
+        guard !remainingIDs.isEmpty else { return nil }
+
+        return remainingIDs[max(removedIndex - 1, 0)]
+    }
+}
+
 private struct ModularSettingsTabBarIconButton: View {
     let systemName: String
     let help: LocalizedStringKey
